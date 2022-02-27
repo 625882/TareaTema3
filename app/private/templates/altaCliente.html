@@ -1,0 +1,41 @@
+{% extends "base/base.html" %}
+{% block titulo %}Clientes{% endblock %}
+{% block contenido %}
+<h1>Alta Cliente</h1>
+<div class="row">
+
+    <form action="{{ url_for('private.altaCliente') }}" method="post" enctype="multipart/form-data">
+        {{ form.csrf_token() }}
+        <div class="mb-3 mt-3">
+             {{ form.dni.label(class="form-label") }}
+             {{ form.dni(class="form-control") }}
+             {% for error in form.dni.errors %}
+                <span class="bg-danger">{{ error }}</span>
+             {% endfor %}
+        </div>
+        <div class="mb-3 mt-3">
+            {{ form.nombre.label(class="form-label") }}
+            {{ form.nombre(class="form-control") }}
+        </div>
+        <div class="mb-3 mt-3">
+            {{ form.apellidos.label(class="form-label") }}
+            {{ form.apellidos(class="form-control") }}
+            {% for error in form.apellidos.errors %}
+                <span class="bg-danger">{{ error }}</span>
+            {% endfor %}
+        </div>
+        <div class="mb-3 mt-3">
+            {{ form.imagen.label(class="form-label") }}
+            {{ form.imagen(class="form-control") }}
+            {% for error in form.imagen.errors %}
+                <span class="bg-danger">{{ error }}</span>
+            {% endfor %}
+        </div>
+        <div class="mb-3 mt-3">
+            {{ form.submit(class="btn btn-primary") }}
+        </div>
+
+    </form>
+
+</div>
+{% endblock %}

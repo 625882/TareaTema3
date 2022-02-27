@@ -4,5 +4,27 @@
 <h1>Clientes</h1>
 <div class="row">
 
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">DNI</th>
+      <th scope="col">Nombre</th>
+      <th scope="col">Apellidos</th>
+      <th scope="col">Imagen</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for cliente in clientes %}
+        <tr>
+          <th scope="row">{{ cliente.dni }}</th>
+          <td>{{ cliente.nombre }}</td>
+          <td>{{ cliente.apellidos }}</td>
+          <td><img src="data:image/jpg;base64,{{ cliente.imagen }}" alt="img_data" id="imgslot"/></td>
+        </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+
 </div>
 {% endblock %}
