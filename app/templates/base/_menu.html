@@ -16,6 +16,13 @@
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="{{ url_for('private.altaCliente') }}">Alta Cliente</a>
         </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Hash Pimienta</a>
+          <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="{{ url_for('login.altaUsuario') }}">Registro</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('login.loginHashPeeper') }}">Login</a></li>
+          </ul>
+        </li>
       </ul>
     </div>
   </div>
