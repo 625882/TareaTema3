@@ -27,7 +27,7 @@ def altaCliente():
 
         if  len(encoded_bytes) > 1024*1024:
             form.imagen.errors.append("Tamaño máximo 1MB")
-            return render_template("altaCliente.html", form =  form)
+            return render_template("altaUsuario.html", form =  form)
         else:
             encoded_string = str(encoded_bytes).replace("b'", "").replace("'", "")
             cliente = Cliente()
@@ -40,4 +40,4 @@ def altaCliente():
 
         return render_template("indexcliente.html", clientes=clientes)
 
-    return render_template("altaCliente.html", form = form)
+    return render_template("altaUsuario.html", form = form)
