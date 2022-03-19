@@ -2,10 +2,10 @@ from flask import render_template, request, redirect, url_for
 from flask_login import login_user, logout_user, current_user
 
 import app
-from . import login
+from . import sesiones
 from .forms import LoginForm
 from .forms import UsuarioForm
-from .models import Usuario
+from ..login.models import Usuario
 
 PEEPER = "ClaveSecretaPeeper"
 
@@ -13,18 +13,23 @@ PEEPER = "ClaveSecretaPeeper"
 def load_user(user_id):
     return Usuario.get_by_id(user_id)
 
-@login.route('/')
+@sesiones.route('/')
 def index():  # put application's code here
     return render_template('index.html')
 
-@login.route("/welcome/")
+@sesiones.route("/logoutsession/")
+def logoutsession():
+    logout_user()
+    return redirect(url_for('sesiones.index'))
+
+@sesiones.route("/welcome/")
 def welcome():
     return render_template("welcome.html")
 
-@login.route("/altaUsuario/", methods=["GET","POST"])
-def altaUsuario():
+@sesiones.route("/altaUsuarioSesiones/", methods=["GET","POST"])
+def altaUsuarioSesiones():
     if current_user.is_authenticated:
-        return redirect(url_for("login.welcome"))
+        return redirect(url_for("sesiones.welcome"))
     error = ""
     form = UsuarioForm(request.form)
     if form.validate_on_submit():
@@ -36,15 +41,15 @@ def altaUsuario():
             usuario.nombre = form.nombre.data
             usuario.apellidos = form.apellidos.data
             usuario.create()
-            return redirect(url_for('login.welcome'))
+            return redirect(url_for('sesiones.loginSesiones'))
         except Exception as e:
             error = "No se ha podido dar de alta " + e.__str__()
     return render_template("altaUsuarioSesiones.html", form=form, error=error)
 
-@login.route("/loginHashPeeper/", methods=["GET","POST"])
-def loginHashPeeper():
+@sesiones.route("/loginSesiones/", methods=["GET","POST"])
+def loginSesiones():
     if current_user.is_authenticated:
-        return redirect(url_for("login.indexcliente"))
+        return redirect(url_for("private.indexcliente"))
     error = ""
     form = LoginForm(request.form)
     if form.validate_on_submit():
@@ -53,7 +58,9 @@ def loginHashPeeper():
         usuario = Usuario.get_by_username(username)
 
         if usuario and usuario.check_password(password):
-            return redirect(url_for("login.indexcliente"))
+            login_user(usuario, form.recuerdame.data)
+            return redirect(url_for("private.indexcliente"))
         else:
             error = "Usuario y/o contraseña incorrecta"
     return render_template("loginSesiones.html", form=form, error=error)
+
