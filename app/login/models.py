@@ -1,9 +1,10 @@
+from flask_login import UserMixin
 from sqlalchemy.exc import IntegrityError
 from app import db
 from werkzeug.security import generate_password_hash, check_password_hash
 
 
-class Usuario(db.Model):
+class Usuario(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     username = db.Column(db.String(15), unique=True, nullable=False)
     password = db.Column(db.String(), nullable=False)

@@ -1,0 +1,13 @@
+{% extends "base/base.html" %}
+{% block titulo %}Crear Cookie{% endblock %}
+{% block contenido %}
+<div class="text-center">
+    <h1 class="display-4">Mostrar Sesiones</h1>
+    Nombre:{{ nombre }}
+    <br/>
+    Apellidos:{{ apellidos }}
+        <form action="{{ url_for('sesiones.mostrarsesion') }}" method="post">
+        <input type="submit" value="Borrar" class="bg-danger">
+    </form>
+</div>
+{% endblock %}
