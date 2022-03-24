@@ -1,0 +1,29 @@
+{% extends "base/base.html" %}
+{% block titulo %}Inicio{% endblock %}
+{% block contenido %}
+<div class="text-center">
+    <h1 class="display-4">Área de administración</h1>
+    <p>Bienvenido</p>
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Usuario</th>
+          <th scope="col">Nombre</th>
+          <th scope="col">Apellidos</th>
+          <th scope="col">Es administrador</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for usuario in usuarios %}
+            <tr>
+              <th scope="row">{{ usuario.username }}</th>
+              <td>{{ usuario.nombre }}</td>
+              <td>{{ usuario.apellidos }}</td>
+              <td>{{ usuario.is_admin }}</td>
+            </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+</div>
+{% endblock %}

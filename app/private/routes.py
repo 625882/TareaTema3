@@ -1,7 +1,7 @@
 import base64
 
 from flask import render_template, request, redirect, url_for
-from flask_login import login_user, logout_user, current_user
+from flask_login import login_required, logout_user, current_user
 from werkzeug.datastructures import CombinedMultiDict
 
 from . import private
@@ -10,17 +10,15 @@ from .models import Cliente
 
 
 @private.route("/indexcliente/", methods=["GET","POST"])
+@login_required
 def indexcliente():
-    if not current_user.is_authenticated:
-        return redirect(url_for("login.loginHashPeeper"))
     clientes = Cliente.query.all()
 
     return render_template("indexcliente.html", clientes = clientes)
 
 @private.route("/altaCliente/", methods=["GET","POST"])
+@login_required
 def altaCliente():
-    if not current_user.is_authenticated:
-        return redirect(url_for("login.loginHashPeeper"))
     form = ClienteForm(CombinedMultiDict((request.files, request.form)))
     if form.validate_on_submit():
         dni = request.form.get("dni")
