@@ -3,6 +3,7 @@ from sqlalchemy.exc import IntegrityError
 from app import db
 from werkzeug.security import generate_password_hash, check_password_hash
 
+import app
 
 class Usuario(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -16,7 +17,9 @@ class Usuario(db.Model, UserMixin):
         try:
             db.session.add(self)
             db.session.commit()
+            app.logger.info("Usuario con el username: " + self.username + " insertado correctamente.")
         except IntegrityError:
+            app.logger.error("Error: ya existe un cliente con el mismo DNI.")
             raise Exception("Error: ya existe un usuario con el mismo username")
 
     def __str__(self):

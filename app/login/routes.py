@@ -36,9 +36,11 @@ def altaUsuario():
             usuario.nombre = form.nombre.data
             usuario.apellidos = form.apellidos.data
             usuario.create()
+            app.logger.info("Se ha dado de alta el usuario: "+usuario.username)
             return redirect(url_for('login.welcome'))
         except Exception as e:
             error = "No se ha podido dar de alta " + e.__str__()
+            app.logger.error(error)
     return render_template("altaUsuarioSesiones.html", form=form, error=error)
 
 @login.route("/loginHashPeeper/", methods=["GET","POST"])
@@ -53,7 +55,9 @@ def loginHashPeeper():
         usuario = Usuario.get_by_username(username)
 
         if usuario and usuario.check_password(password):
+            app.logger.info("Ha accedido el usuario: " + usuario.username)
             return redirect(url_for("login.indexcliente"))
         else:
             error = "Usuario y/o contraseña incorrecta"
+            app.logger.error(error)
     return render_template("loginSesiones.html", form=form, error=error)

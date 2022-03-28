@@ -8,6 +8,7 @@ from . import private
 from .forms import ClienteForm
 from .models import Cliente
 
+import app
 
 @private.route("/indexcliente/", methods=["GET","POST"])
 @login_required
@@ -39,7 +40,7 @@ def altaCliente():
             cliente.imagen = encoded_string
             cliente.save()
             clientes = Cliente.query.all()
-
+            app.logger.info("Se ha dado de alta el cliente con DNI: "+cliente.dni)
         return render_template("indexcliente.html", clientes=clientes)
 
     return render_template("altaUsuarioSesiones.html", form = form)

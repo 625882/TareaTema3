@@ -2,9 +2,11 @@ from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
-
+from .log.logs import configure_logging
 
 app = Flask(__name__)
+
+logger = configure_logging(__name__)
 #Establecemos la cadena de conexión
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:123456@localhost:5432/tareaTema3Project'
 #Desactivamos la gestión de notificaciones de SQLAlchemy

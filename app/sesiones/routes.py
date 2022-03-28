@@ -14,7 +14,7 @@ def load_user(user_id):
     return Usuario.get_by_id(user_id)
 
 @sesiones.route('/')
-def index():  # put application's code here
+def index():
     return render_template('index.html')
 
 @sesiones.route("/logoutsession/")
@@ -44,6 +44,7 @@ def altaUsuarioSesiones():
             return redirect(url_for('sesiones.loginSesiones'))
         except Exception as e:
             error = "No se ha podido dar de alta " + e.__str__()
+            app.logger.error(error)
     return render_template("altaUsuarioSesiones.html", form=form, error=error)
 
 @sesiones.route("/loginSesiones/", methods=["GET","POST"])
@@ -62,5 +63,6 @@ def loginSesiones():
             return redirect(url_for("private.indexcliente"))
         else:
             error = "Usuario y/o contraseña incorrecta"
+            app.logger.warning("Se ha intentado iniciar sesión con el usuario: "+username)
     return render_template("loginSesiones.html", form=form, error=error)
 
