@@ -53,11 +53,13 @@ def loginHashPeeper():
         username = form.username.data
         password = PEEPER + form.password.data
         usuario = Usuario.get_by_username(username)
-
-        if usuario and usuario.check_password(password):
-            app.logger.info("Ha accedido el usuario: " + usuario.username)
-            return redirect(url_for("login.indexcliente"))
+        if app.recaptcha.verify():
+            if usuario and usuario.check_password(password):
+                app.logger.info("Ha accedido el usuario: " + usuario.username)
+                return redirect(url_for("login.indexcliente"))
+            else:
+                error = "Usuario y/o contraseña incorrecta"
+                app.logger.error(error)
         else:
-            error = "Usuario y/o contraseña incorrecta"
-            app.logger.error(error)
+            error = "Captcha incorrecto. Eres un robot."
     return render_template("loginSesiones.html", form=form, error=error)

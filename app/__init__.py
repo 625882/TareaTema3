@@ -3,8 +3,13 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
 from .log.logs import configure_logging
+from flask_recaptcha import ReCaptcha
 
 app = Flask(__name__)
+app.config["RECAPTCHA_SITE_KEY"] = "6LeILSgfAAAAAJQ5sEtBCUfJKTHqQcQEiNPLXBxT"
+app.config["RECAPTCHA_SECRET_KEY"] = "6LeILSgfAAAAACfiGhSMNupI6MYpZPhF9hlrCRVq"
+
+recaptcha = ReCaptcha(app)
 
 logger = configure_logging(__name__)
 #Establecemos la cadena de conexión

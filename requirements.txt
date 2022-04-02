@@ -7,3 +7,4 @@ WTForms~=3.0.1
 SQLAlchemy~=1.4.31
 alembic~=1.7.6
 Flask-Login
+Flask-reCaptcha

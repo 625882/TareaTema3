@@ -15,6 +15,7 @@
             <form action="{{ url_for('login.loginHashPeeper') }}" method="post">
                 {{ form.csrf_token() }}
                 {{ generarForm(form) }}
+                {{ recaptcha }}
                 <input type="submit" value="Iniciar Sesión" class="btn btn-primary"/>
                 <br>
             </form>

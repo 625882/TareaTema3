@@ -32,19 +32,23 @@ def altaUsuarioSesiones():
         return redirect(url_for("sesiones.welcome"))
     error = ""
     form = UsuarioForm(request.form)
-    if form.validate_on_submit():
-        try:
-            usuario = Usuario()
-            usuario.username = form.username.data
-            password = PEEPER + form.password.data
-            usuario.set_password(password)
-            usuario.nombre = form.nombre.data
-            usuario.apellidos = form.apellidos.data
-            usuario.create()
-            return redirect(url_for('sesiones.loginSesiones'))
-        except Exception as e:
-            error = "No se ha podido dar de alta " + e.__str__()
-            app.logger.error(error)
+    if app.recaptcha.verify():
+        if form.validate_on_submit():
+            if app.recaptcha.verify():
+                try:
+                    usuario = Usuario()
+                    usuario.username = form.username.data
+                    password = PEEPER + form.password.data
+                    usuario.set_password(password)
+                    usuario.nombre = form.nombre.data
+                    usuario.apellidos = form.apellidos.data
+                    usuario.create()
+                    return redirect(url_for('sesiones.loginSesiones'))
+                except Exception as e:
+                    error = "No se ha podido dar de alta " + e.__str__()
+                    app.logger.error(error)
+            else:
+                error = "Captcha incorrecto. Eres un robot."
     return render_template("altaUsuarioSesiones.html", form=form, error=error)
 
 @sesiones.route("/loginSesiones/", methods=["GET","POST"])
@@ -57,12 +61,14 @@ def loginSesiones():
         username = form.username.data
         password = PEEPER + form.password.data
         usuario = Usuario.get_by_username(username)
-
-        if usuario and usuario.check_password(password):
-            login_user(usuario, form.recuerdame.data)
-            return redirect(url_for("private.indexcliente"))
+        if app.recaptcha.verify():
+            if usuario and usuario.check_password(password):
+                login_user(usuario, form.recuerdame.data)
+                return redirect(url_for("private.indexcliente"))
+            else:
+                error = "Usuario y/o contraseña incorrecta"
+                app.logger.warning("Se ha intentado iniciar sesión con el usuario: "+username)
         else:
-            error = "Usuario y/o contraseña incorrecta"
-            app.logger.warning("Se ha intentado iniciar sesión con el usuario: "+username)
+            error = "Captcha incorrecto. Eres un robot."
     return render_template("loginSesiones.html", form=form, error=error)
 
